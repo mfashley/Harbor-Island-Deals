@@ -1,6 +1,4 @@
 # Harbor-Island-Deals
-
-### Harbor Island Deals
 ### Hermes Studio Coupon Finder
 
 ## About the Project
