@@ -2,7 +2,7 @@
 ### Hermes Studio Coupon Finder
 
 ## About the Project
-Harbor Island Deals is a responsive coupon and deal finder designed for Harbor Island Marina employees. The application helps employees discover savings on maritime supplies by making relevant deals easier to search, filter, and evaluate.
+Harbor Island Deals is a responsive coupon and deal finder designed for Harbor Island Marina. The application helps discover savings on maritime supplies by making relevant deals easier to search, filter, and evaluate.
 
 ## Project Goals
 - Provide a user-friendly interface for discovering deals.
