@@ -1,0 +1,21 @@
+# Next.js
+frontend/.next/
+frontend/node_modules/
+.next/
+
+# Python
+backend/__pycache__/
+**/__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
