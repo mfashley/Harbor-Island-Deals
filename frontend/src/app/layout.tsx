@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Navbar from "../components/Navbar";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Harbour Island",
+  title: "Harbour Island Deals",
   description: "Maritime deals and discounts",
 };
 
@@ -12,7 +14,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        <main>
+        {children}
+        </main>
+      </body>
     </html>
   );
 }
