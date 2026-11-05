@@ -1,0 +1,74 @@
+HARBOUR ISLAND – PROJECT SETUP INSTRUCTIONS
+
+PREREQUISITES:
+
+Install Node.js (LTS), Python, PostgreSQL, Redis, Git, and VS Code.
+-----------------------------------
+
+CLONE THE PROJECT:
+
+Clone the repository and open the harbourislanddeals folder in VS Code.
+-----------------------------------
+FRONTEND SETUP:
+
+Navigate to the frontend directory:
+
+cd frontend
+
+Install dependencies:
+
+npm install
+-----------------------------------
+BACKEND SETUP:
+
+Navigate to the backend directory:
+
+cd ../backend
+
+Create a Python virtual environment:
+
+python -m venv venv
+
+Activate it (Windows):
+
+venv\Scripts\activate
+
+Install dependencies:
+
+pip install fastapi uvicorn sqlalchemy psycopg2-binary playwright redis
+
+Install Playwright browsers:
+
+python -m playwright install
+
+
+-----------------------------------
+START SUPPORTING SERVICES
+
+Make sure PostgreSQL and Redis are installed, running, and configured.
+-----------------------------------
+
+RUN THE PROJECT:
+Open two terminals.
+
+Terminal 1 – Backend (from /backend):
+
+uvicorn main:app --reload
+
+Terminal 2 – Frontend (from /frontend):
+
+npm run dev
+-----------------------------------
+
+ACCESS THE APPLICATION:
+Website: http://localhost:3000
+
+Backend API: http://localhost:8000
+
+-----------------------------------
+
+BASICS OF THE STRUCTURE:
+frontend/src/app/ – Website pages and routing. frontend/src/components/ – Reusable UI components. frontend/src/features/ – Frontend functionality. frontend/src/lib/ – API comms and utils.
+
+
+IMPORTANT: Both frontend and backend must be running for the complete application to work. Configuration files such as package.json, next.config.ts, and tsconfig.json belong directly inside frontend/.
