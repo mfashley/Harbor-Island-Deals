@@ -9,6 +9,7 @@ import UiIcon from "./UiIcon";
 const navLinks = [
   { name: "Home", href: "/", icon: "home" as const },
   { name: "About", href: "/about", icon: "info" as const },
+  { name: "Catalog", href: "/catalog", icon: "tag" as const },
   { name: "Help", href: "/help", icon: "help" as const },
 ];
 
