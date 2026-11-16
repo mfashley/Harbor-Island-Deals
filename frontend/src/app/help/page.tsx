@@ -27,27 +27,34 @@ export default function Help() {
   };
 
   return (
-    <main className="min-h-screen bg-[#071B2B]">
+    <main className="min-h-screen">
 
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
 
         <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
 
-          {/* Left Column - FAQ (TBD) */}
+          {/* Left Column - FAQ Introduction */}
           <div className="flex flex-col items-start gap-6">
 
-            <h1 className="text-4xl font-bold leading-tight text-white md:text-5xl">
-              We're here to help!
-              <span className="block text-[#D5B779]">
-                What do you need?
-              </span>
-            </h1>
-
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#D5B779]">
+               Help & Support
+              </p>
+              <h1 className="text-4xl font-bold leading-tight text-white md:text-5xl">
+                We're here to help!
+                <span className="block text-[#D5B779]">
+                  What do you need?
+                </span>
+              </h1>
+                <p className="max-w-xl text-lg leading-relaxed text-[#F4F7FA]">
+                  Have questions about Harbour Island Deals? Our help center
+                  is being developed to make finding answers and navigating
+                  our platform as easy as possible.
+                </p>
 
           </div>
 
           {/* Right Column - Contact Form */}
-          <div className="relative rounded-2xl border border-[#254357] bg-[#0D293D] p-6 shadow-xl md:p-8">
+          <div className="relative rounded-2xl   p-6 shadow-xl md:p-8">
 
             <h2 className="mb-2 text-2xl font-bold text-white">
               Submit a Request
