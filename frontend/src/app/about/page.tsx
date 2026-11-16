@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function About() {
   return (
-    <main className="min-h-screen bg-[#071B2B]">
+    <main className="min-h-screen ">
 
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
 
@@ -25,8 +25,8 @@ export default function About() {
             </h1>
             <p className="max-w-xl text-lg leading-relaxed text-[#F4F7FA]">
               Harbour Island Marina is a marina located in Seawaren, New Jersey, run with the specific goal of providing boat maintenance,
-              docking space, and a variety of other services for a maritime enthusiast. We have been operating since |YEAR| and growing ever since. We're a small but passionate team, dedicated to enjoying a 
-              small aspect of our little world. TBC @ a later time.
+              docking space, and a variety of other services for a maritime enthusiast. We have been operating since 1996 and growing ever since. We're a small but passionate team, dedicated to enjoying a 
+              small aspect of our little blue world.
             </p>
             <Link
               href="/help"
@@ -42,10 +42,9 @@ export default function About() {
           {/* Right Column - Marina Image */}
           <div className="relative min-h-[300px] overflow-hidden rounded-2xl border border-[#254357] md:min-h-[450px]">
 
-            {/*Temporary TBC Later */}
             <Image
               src="/images/marina.jpg"
-              alt="View of the marina and local waters..."
+              alt="High tide at Seawaren Marina"
               fill
               priority
               sizes="(max-width: 768px) 100vw, 50vw"

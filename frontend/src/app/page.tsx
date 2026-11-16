@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#071B2B]">
+    <main className="min-h-screen">
 
       <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
 
@@ -45,13 +45,12 @@ export default function Home() {
 
           </div>
 
-          {/* Right Column - Marina Image */}
+          {/* Right Column - Marina @ Hightide Image */}
           <div className="relative min-h-[300px] overflow-hidden rounded-2xl border border-[#254357] md:min-h-[450px]">
 
-            {/*Temporary TBC Later */}
             <Image
-              src="/images/marina.jpg"
-              alt="View of the marina and local waters..."
+              src="/images/hightide.jpg"
+              alt="View of the marina and local waters at high tide..."
               fill
               priority
               sizes="(max-width: 768px) 100vw, 50vw"

@@ -1,46 +1,95 @@
 @import "tailwindcss";
 
+
+/*Theme Variables */
 :root {
     --background: #071b2b;
     --surface: #0d293d;
     --surface-secondary: #103a52;
+
     --primary: #1c6378;
     --accent: #d5b779;
+
     --foreground: #f4f7fa;
     --muted: #b8c7d3;
     --border: #254357;
 }
-@theme inline {
+
+@theme inline{
     --color-background: var(--background);
     --color-foreground: var(--foreground);
+
     --color-surface: var(--surface);
     --color-harbour: var(--surface-secondary);
+
     --color-marine: var(--primary);
-    --color-brass: var(--acent);
+    --color-brass: var(--accent);
+
+    --color-muted: var(--muted);
+    --color-border: var(--border);
 }
+/*Global Reset */
 *{
     box-sizing: border-box;
 }
 
-html {
+html{
+    min-height: 100%;
     scroll-behavior: smooth;
-}
-body{
     background: var(--background);
-    color: var(--foreground);
-    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    min-height: 100vh;
     margin: 0;
+    color: var(--foreground);
+    font-family:Arial, Helvetica, sans-serif;
+
+    background-color: var(--background);
+    background-image:
+        radial-gradient(
+            ellipse at 20% 15%,
+            rgba(28, 99, 120, 0.25),
+            transparent 45%
+        ),
+        radial-gradient(
+            ellipse at 85% 55%,
+            rgba(25, 110, 135, 0.18),
+            transparent 40%
+        ),
+        radial-gradient(
+            ellipse at 45% 100%,
+            rgba(16, 58, 82, 0.3),
+            transparent 50%
+        ),
+        linear-gradient(
+            145deg,
+            #071b2b,
+            #092438 55%,
+            #061725
+        );
+
+    background-attachment: fixed;
 }
 
-::selection {
-    background: var(--accent);
-    color: var(--background);
-}
-
-a{
+/*Links and Buttons */
+a {
     text-decoration: none;
 }
 
-button {
+button { 
     cursor: pointer;
+}
+
+/*Selection */
+::selection {
+    background: var(--accent);
+    color: var(--background)
+}
+
+/*Accessiblity */
+@media (prefers-reduced-motion: reduce){
+    html {
+        scroll-behavior: auto;
+    }
 }
