@@ -41,6 +41,18 @@ Install Playwright browsers:
 
 python -m playwright install
 
+Addional packages:
+
+fastapi
+uvicorn
+sqlalchemy
+bcrypt
+pyjwt
+pydantic[email]
+opencv-python-headless
+numpy
+python-multipart
+
 
 -----------------------------------
 START SUPPORTING SERVICES

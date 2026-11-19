@@ -23,3 +23,10 @@ build/
 
 #backups
 *.backup
+
+
+# backend
+backend/app.db
+backend/__pycache__/
+*.pyc
+.env

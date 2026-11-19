@@ -4,14 +4,29 @@
 import Link from "next/link";
 import { useState } from "react";
 import UiIcon from "../../components/UiIcon";
+import { useRouter } from "next/navigation";
+import { apiPost } from "../../lib/api";
 
 export default function LoginPage() {
   const [message, setMessage] = useState("");
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setMessage("Login is not connected to authentication yet.");
+  const router = useRouter();
+
+async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+
+  const formData = new FormData(e.currentTarget);
+  const email = String(formData.get("email"));
+  const password = String(formData.get("password"));
+
+  try {
+    await apiPost("/login", { email, password });
+    router.push("/catalog");
+    router.refresh();
+  } catch (err) {
+    setMessage(err instanceof Error ? err.message : "Login failed.");
   }
+}
 
   return (
     <main className="flex min-h-[calc(100vh-5rem)] items-center justify-center px-5 py-16">

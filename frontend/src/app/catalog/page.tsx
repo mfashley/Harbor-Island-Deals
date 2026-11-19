@@ -1,8 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UiIcon from "../../components/UiIcon";
-import { categories, productTypes, sampleDeals, filterDeals } from "./deals";
+import { API_URL } from "../../lib/api";
+import {
+  categories, productTypes, sampleDeals, filterDeals,
+  fromApiDeal, formatExpiry, type ApiDeal, type Deal,
+} from "./deals";
 
 const control = "min-h-12 w-full rounded-lg border border-[#547084] bg-[#071B2B] px-4 py-3 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D5B779]";
 
@@ -10,7 +14,20 @@ export default function CatalogPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
   const [productType, setProductType] = useState("All");
-  const deals = filterDeals(sampleDeals, query, category, productType);
+  const [communityDeals, setCommunityDeals] = useState<Deal[]>([]);
+const [loadError, setLoadError] = useState(false);
+
+useEffect(() => {
+  fetch(`${API_URL}/deals`)
+    .then((res) => {
+      if (!res.ok) throw new Error();
+      return res.json();
+    })
+    .then((data: ApiDeal[]) => setCommunityDeals(data.map(fromApiDeal)))
+    .catch(() => setLoadError(true));
+}, []);
+
+const deals = filterDeals([...communityDeals, ...sampleDeals], query, category, productType);
   const hasFilters = Boolean(query || category !== "All" || productType !== "All");
 
   function resetFilters() {
@@ -35,6 +52,12 @@ export default function CatalogPage() {
         <p className="mb-6 rounded-lg border border-[#547084] bg-[#0D293D] px-4 py-3 text-sm leading-relaxed text-[#D5B779]">
           <strong>Demo preview:</strong> These sample coupons are fictional. Real offers will appear when the catalog is connected to the backend.
         </p>
+
+        {loadError && (
+  <p role="alert" className="mb-6 rounded-lg border border-[#547084] bg-[#0D293D] px-4 py-3 text-sm text-[#D5B779]">
+    Couldn’t load community deals right now. Showing sample coupons only.
+  </p>
+)}
 
         <div role="search" aria-label="Search and filter coupons" className="mb-8 rounded-2xl border border-[#254357] bg-[#0D293D] p-5 md:p-6">
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
@@ -85,7 +108,7 @@ export default function CatalogPage() {
               <article key={deal.id} className="flex flex-col overflow-hidden rounded-2xl border border-[#254357] bg-[#0D293D]">
                 <div className="flex items-center justify-between gap-3 border-b border-[#254357] bg-[#103A52] px-6 py-5">
                   <span className="text-3xl font-bold text-[#D5B779]">{deal.offer}</span>
-                  <span className="rounded-full border border-[#547084] px-3 py-1 text-xs font-bold text-white">SAMPLE</span>
+                  <span className="rounded-full border border-[#547084] px-3 py-1 text-xs font-bold text-white">{deal.community ? "COMMUNITY" : "SAMPLE"}</span>
                 </div>
                 <div className="flex flex-1 flex-col p-6">
                   <p className="mb-2 text-sm text-[#B8C7D3]">{deal.retailer}</p>
@@ -96,7 +119,15 @@ export default function CatalogPage() {
                     <span className="rounded-full border border-[#547084] px-3 py-2 text-[#B8C7D3]">{deal.productType}</span>
                   </div>
                   <div className="rounded-lg border border-dashed border-[#547084] bg-[#071B2B] p-3">
+                    <p className={`mb-3 text-sm font-semibold ${deal.expired ? "text-red-300" : "text-[#B8C7D3]"}`}>
+                  {deal.expiresOn
+                    ? `${deal.expired ? "Expired" : "Expires"}: ${formatExpiry(deal.expiresOn)}`
+                    : "No expiration listed"}
+                </p>
+
+                  {!deal.community && (
                     <p className="text-xs text-[#B8C7D3]">{deal.code ? "Sample coupon code" : "Coupon details"}</p>
+                    )}
                     <p className="mt-1 break-all font-bold tracking-wide text-[#D5B779]">{deal.code ?? "No code required"}</p>
                   </div>
                   {deal.url && /^https?:\/\//i.test(deal.url) ? (

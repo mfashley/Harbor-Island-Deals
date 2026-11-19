@@ -1,5 +1,5 @@
-export const categories = ["Dock Supplies", "Boat Maintenance", "Fishing Supplies", "Boat Parts", "Safety Equipment"] as const;
-export const productTypes = ["Supply", "Part", "Equipment"] as const;
+export const categories = ["Dock Supplies", "Boat Maintenance", "Fishing Supplies", "Boat Parts", "Safety Equipment", "Community Deals"] as const;
+export const productTypes = ["Supply", "Part", "Equipment", "Submitted link"] as const;
 
 export interface Deal {
   id: string;
@@ -11,6 +11,50 @@ export interface Deal {
   offer: string;
   code?: string;
   url?: string;
+  expiresOn?: string | null;
+  expired?: boolean;
+  community?: boolean;
+}
+
+export interface ApiDeal {
+  id: number;
+  title: string;
+  url: string;
+  expires_on: string | null;
+  expired: boolean;
+  source: "link" | "qr";
+  created_at: string;
+}
+
+export function fromApiDeal(d: ApiDeal): Deal {
+  let retailer = "Community submission";
+  try {
+    retailer = new URL(d.url).hostname.replace(/^www\./, "");
+  } catch {}
+  return {
+    id: `api-${d.id}`,
+    title: d.title,
+    description: d.source === "qr" ? "Shared by a community member via QR code." : "Shared by a community member.",
+    category: "Community Deals",
+    productType: "Submitted link",
+    retailer,
+    offer: "Community deal",
+    url: d.url,
+    expiresOn: d.expires_on,
+    expired: d.expired,
+    community: true,
+  };
+}
+
+// Parse YYYY-MM-DD as a local date (new Date("2026-11-30") would shift a day in US timezones)
+export function formatExpiry(iso?: string | null) {
+  if (!iso) return "No expiration listed";
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 }
 
 // DEMO DATA ONLY: these are fictional offers, not verified coupons.
