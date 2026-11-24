@@ -15,7 +15,7 @@ export default function Help() {
       return;
     }
 
-    // Backend connection will go here later
+    
     console.log({
       subject,
       description,
