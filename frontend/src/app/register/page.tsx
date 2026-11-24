@@ -4,24 +4,35 @@
 import Link from "next/link";
 import { useState } from "react";
 import UiIcon from "../../components/UiIcon";
+import { useRouter } from "next/navigation";
+import { apiPost } from "../../lib/api";
 
 export default function RegisterPage() {
   const [message, setMessage] = useState("");
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  const router = useRouter();
 
-    const formData = new FormData(e.currentTarget);
-    const password = formData.get("password");
-    const confirmPassword = formData.get("confirmPassword");
+async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault();
 
-    if (password !== confirmPassword) {
-      setMessage("Passwords do not match.");
-      return;
-    }
+  const formData = new FormData(e.currentTarget);
+  const name = String(formData.get("name"));
+  const email = String(formData.get("email"));
+  const password = String(formData.get("password"));
+  const confirmPassword = String(formData.get("confirmPassword"));
 
-    setMessage("Registration is not connected to authentication yet.");
+  if (password !== confirmPassword) {
+    setMessage("Passwords do not match.");
+    return;
   }
+
+  try {
+    await apiPost("/register", { name, email, password });
+    router.push("/login");
+  } catch (err) {
+    setMessage(err instanceof Error ? err.message : "Registration failed.");
+  }
+}
 
   return (
     <main className="flex min-h-[calc(100vh-5rem)] items-center justify-center px-5 py-16">

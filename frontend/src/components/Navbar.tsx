@@ -2,8 +2,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { apiGet, apiPost } from "../lib/api";
 import UiIcon from "./UiIcon";
 
 const navLinks = [
@@ -11,12 +12,42 @@ const navLinks = [
   { name: "About", href: "/about", icon: "info" as const },
   { name: "Catalog", href: "/catalog", icon: "tag" as const },
   { name: "Help", href: "/help", icon: "help" as const },
+  { name: "Submit", href: "/submit", icon: "tag" as const },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+
+  const router = useRouter();
+const [user, setUser] = useState<{ id: number; name: string; email: string; is_admin: boolean } | null>(null);
+
+// Re-check the session on every page change, so the navbar updates right after login
+useEffect(() => {
+  let cancelled = false;
+  apiGet("/me")
+    .then((data) => {
+      if (!cancelled) setUser(data);
+    })
+    .catch(() => {
+      if (!cancelled) setUser(null);
+    });
+  return () => {
+    cancelled = true;
+  };
+}, [pathname]);
+
+async function handleLogout() {
+  try {
+    await apiPost("/logout", {});
+  } finally {
+    setUser(null);
+    setAccountOpen(false);
+    router.push("/");
+    router.refresh();
+  }
+}
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#547084]/30 bg-[#071b2b]/75 shadow-lg shadow-black/10 backdrop-blur-xl">
@@ -86,40 +117,77 @@ export default function Navbar() {
             </button>
 
             {accountOpen && (
-              <div
-                id="account-dropdown"
-                className="absolute right-0 top-16 z-50 w-64 rounded-xl border border-[#547084]/50 bg-[#0d293d] p-4 shadow-2xl shadow-black/30"
-              >
-                <div className="mb-4 border-b border-[#254357] pb-4">
-                  <p className="font-bold text-white">
-                    Welcome aboard!
-                  </p>
-                  <p className="mt-1 text-sm text-[#B8C7D3]">
-                    Sign in or create an account to get started.
-                  </p>
-                </div>
+  <div
+    id="account-dropdown"
+    className="absolute right-0 top-16 z-50 w-64 rounded-xl border border-[#547084]/50 bg-[#0d293d] p-4 shadow-2xl shadow-black/30"
+  >
+    {user ? (
+      <>
+  <div className="mb-4 border-b border-[#254357] pb-4">
+    <p className="font-bold text-white">Hi, {user.name.split(" ")[0]}!</p>
+    <p className="mt-1 truncate text-sm text-[#B8C7D3]">{user.email}</p>
+  </div>
 
-                <div className="flex flex-col gap-2">
-                  <Link
-                    href="/login"
-                    onClick={() => setAccountOpen(false)}
-                    className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#D5B779] px-4 py-2 font-bold text-[#071B2B] transition-colors hover:bg-[#E7CB91]"
-                  >
-                    <UiIcon name="user" size={18} />
-                    Login
-                  </Link>
+  <div className="flex flex-col gap-2">
+    <Link
+      href="/feedback"
+      onClick={() => setAccountOpen(false)}
+      className="flex min-h-11 items-center justify-center rounded-lg border border-[#547084]/60 px-4 py-2 font-semibold text-[#F4F7FA] transition-colors hover:bg-[#103A52]"
+    >
+      Give Feedback
+    </Link>
 
-                  <Link
-                    href="/register"
-                    onClick={() => setAccountOpen(false)}
-                    className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#547084]/60 px-4 py-2 font-semibold text-[#F4F7FA] transition-colors hover:bg-[#103A52]"
-                  >
-                    <UiIcon name="users" size={18} />
-                    Create Account
-                  </Link>
-                </div>
-              </div>
-            )}
+    {user.is_admin && (
+      <Link
+        href="/admin/feedback"
+        onClick={() => setAccountOpen(false)}
+        className="flex min-h-11 items-center justify-center rounded-lg bg-[#D5B779] px-4 py-2 font-bold text-[#071B2B] transition-colors hover:bg-[#E7CB91]"
+      >
+        Feedback Inbox
+      </Link>
+    )}
+
+    <button
+      type="button"
+      onClick={handleLogout}
+      className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border border-[#547084]/60 px-4 py-2 font-semibold text-[#F4F7FA] transition-colors hover:bg-[#103A52]"
+    >
+      Log Out
+    </button>
+  </div>
+</>
+    ) : (
+      <>
+        <div className="mb-4 border-b border-[#254357] pb-4">
+          <p className="font-bold text-white">Welcome aboard!</p>
+          <p className="mt-1 text-sm text-[#B8C7D3]">
+            Sign in or create an account to get started.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Link
+            href="/login"
+            onClick={() => setAccountOpen(false)}
+            className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#D5B779] px-4 py-2 font-bold text-[#071B2B] transition-colors hover:bg-[#E7CB91]"
+          >
+            <UiIcon name="user" size={18} />
+            Login
+          </Link>
+
+          <Link
+            href="/register"
+            onClick={() => setAccountOpen(false)}
+            className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#547084]/60 px-4 py-2 font-semibold text-[#F4F7FA] transition-colors hover:bg-[#103A52]"
+          >
+            <UiIcon name="users" size={18} />
+            Create Account
+          </Link>
+        </div>
+      </>
+    )}
+  </div>
+)}
           </div>
 
 

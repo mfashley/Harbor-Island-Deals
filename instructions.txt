@@ -42,6 +42,27 @@ Install Playwright browsers:
 python -m playwright install
 
 
+
+Addional packages:
+
+fastapi
+uvicorn
+sqlalchemy
+bcrypt
+pyjwt
+pydantic[email]
+opencv-python-headless
+numpy
+python-multipart
+
+Run pip install -r backend/requirements.txt.
+How to run both servers 
+    uvicorn main:app --reload in backend 
+    npm run dev in frontend.
+
+Make your account an Admin account: sqlite3 app.db "UPDATE users SET is_admin = 1 WHERE email = 'email@example.com';" 
+
+
 -----------------------------------
 START SUPPORTING SERVICES
 
